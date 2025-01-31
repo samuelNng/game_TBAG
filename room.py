@@ -4,6 +4,7 @@ class Room:
         self.description= None
         self.linked_rooms={}
         self.character = None
+        self.item = None
     #getter description
     def get_description (self):
         return self.description
@@ -24,24 +25,31 @@ class Room:
     def RoomName(self):
         print(self.name)
     
-    def link_room(self, room_to_link, direction):
-        self.linked_rooms[direction] = room_to_link
+    def link_room(self, room_to_link, direction, locked=False):
+        self.linked_rooms[direction] = (room_to_link, locked)
 
     def get_details(self):
         print(self.name)
         print("-------------------------")
         print(self.description)
         for direction in self.linked_rooms:
-            room = self.linked_rooms[direction]
-        print("The " + room.get_name()+ " is "+direction)
+            room, locked  = self.linked_rooms[direction]
+            if locked == True:
+                print(f"The {room.get_name()} is {direction} (locked)")
+            else:
+                print(f"The {room.get_name()} is {direction}")
         print("-------------------------\n")
     #moving between rooms
-    def move(self, direction):
+    def move(self, direction, has_key=False):
         if direction in self.linked_rooms:
-            return self.linked_rooms[direction]
+            room, locked = self.linked_rooms[direction]
+            if locked and not has_key:
+                print("The door is locked. You need a key to open it.")
+                return self
+            else:
+                return room
         else:
-            print("you can't go that way")
-
+            print("You can't go that way.")
             return self
         
     #Put character into room
@@ -49,6 +57,15 @@ class Room:
     def set_character(self, new_character):
      self.character = new_character
 
+    # set & get item
     def get_character(self):
         return self.character
- 
+    
+    def get_item(self):
+        return self.item
+
+    def set_item(self, item):
+        self.item = item
+
+    def remove_item(self):
+        self.item = None

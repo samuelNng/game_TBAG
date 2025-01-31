@@ -22,7 +22,7 @@ class Character():
 
     def talk(self):
         if self.conversation is not None:
-            print("[" + self.name + " says]: " + self.conversation)
+            print(self.name + ": "+ self.conversation)
         else:
             print(self.name + " doesn't want to talk to you")
 
@@ -51,3 +51,17 @@ class Enemy(Character):
         else:
             print(self.name + " crushes you, puny adventurer")
             return False
+        
+class Supporter(Character):
+    def __init__(self, char_name, char_description):
+        super().__init__(char_name, char_description)
+        self.cheese_given = False  # Track whether cheese has been given
+
+    def pet(self):
+        if not self.cheese_given:
+            print(f"You pet {self.name}. {self.name} purrs happily and gives you some cheese!")
+            self.cheese_given = True
+            return "cheese"  # Return the cheese as an item
+        else:
+            print(f"{self.name} has already given you cheese. No more cheese for now.")
+            return None
