@@ -1,7 +1,8 @@
 from room import Room
 from character import Supporter,Enemy
+from item import Item
 
-
+# Create rooms
 kitchen = Room()
 kitchen.set_name("kitchen")
 kitchen.set_description("A dank and dirty room buzzing with flies")
@@ -14,16 +15,7 @@ dining_hall = Room()
 dining_hall.set_name("dining_hall")
 dining_hall.set_description("A large room with ornate golden decorations")
 
-#print(kitchen.name)
 
-#print(kitchen.get_description())
-#kitchen.RoomName()
-#kitchen.describe()
-
-
-#print(ballroom.get_description())
-#ballroom.RoomName()
-#ballroom.describe()
 
 #link_room
 kitchen.link_room(dining_hall, "south")
@@ -31,12 +23,6 @@ dining_hall.link_room(kitchen, "north")
 dining_hall.link_room(ballroom,"west")
 ballroom.link_room(dining_hall,"east")
 
-
-
-#kitchen.get_details()
-#dining_hall.get_details()
-
-#current_room = kitchen
 
 # Create a cat character
 cat = Supporter("Whiskers", "A fluffy white cat with green eyes. If you \033[4mpet\033[0m it, it may give you something.")
@@ -55,9 +41,15 @@ dave.set_conversation("Brrlgrh... rgrhl... brains...")
 dave.set_weakness("cheese")
 dining_hall.set_character(dave)
 
+# Create a key and add it to the kitchen
+key = Item()
+key.set_name("key")
+key.set_description("A small, shiny key that looks like it could open a door.")
+kitchen.set_item(key)
 
 cheese = False
 YouDead = False
+has_key = False
 current_room = kitchen
 while YouDead == False:
       print("\n")
@@ -83,6 +75,16 @@ while YouDead == False:
                   print("You now have cheese in your inventory!")
             else:
                   print("There's no one here to pet.")
+      elif command == "take":
+            if item is not None:
+                  if item.name == "key":
+                        has_key = True
+                        print("You take the key.")
+                        current_room.remove_item()
+                  else:
+                        print(f"You take the {item.name}.")
+            else:
+                   print("There's nothing here to take.")
 
       elif command == "fight":
             if inhabitant is not None and isinstance(inhabitant, Enemy):
