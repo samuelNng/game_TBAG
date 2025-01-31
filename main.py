@@ -1,5 +1,5 @@
 from room import Room
-from character import Character,Enemy
+from character import Supporter,Enemy
 
 
 kitchen = Room()
@@ -38,8 +38,17 @@ ballroom.link_room(dining_hall,"east")
 
 #current_room = kitchen
 
-#Add def charachter & enemy in main
-#put Dave to the room
+# Create a cat character
+cat = Supporter("Whiskers", "A fluffy white cat with green eyes. If you \033[4mpet\033[0m it, it may give you something.")
+# Set the cat's conversation
+cat.set_conversation("Meow! Purr...")
+# Describe the cat
+cat.describe() 
+# Talk to the cat
+cat.talk() 
+kitchen.set_character(cat)
+
+#put Enemy to the room
 dave = Enemy("Dave", "A smelly zombie")
 dave.describe()
 dave.set_conversation("Brrlgrh... rgrhl... brains...")
@@ -47,7 +56,7 @@ dave.set_weakness("cheese")
 dining_hall.set_character(dave)
 
 
-
+cheese = False
 YouDead = False
 current_room = kitchen
 while YouDead == False:
@@ -67,14 +76,34 @@ while YouDead == False:
       elif command == "talk":
             if inhabitant is not None:
                 inhabitant.talk()
+     
+      elif command == "pet":
+            if inhabitant is not None and isinstance(inhabitant, Supporter):
+                  cheese = True
+                  print("You now have cheese in your inventory!")
+            else:
+                  print("There's no one here to pet.")
+
       elif command == "fight":
             if inhabitant is not None and isinstance(inhabitant, Enemy):
                   fight_with = input ("What are you going to fight with?: ")
-                  if inhabitant.fight(fight_with) == True :
+                  if fight_with == "cheese"and cheese == False:
+                        print("you have no cheese, you should pet the cat next time.")
+                        print("GAME OVER!")
+                        YouDead = True
+
+                  elif inhabitant.fight(fight_with) == True and cheese == True:
                         current_room.set_character(None)
+                        cheese = False
                         print("Hooray, you won the fight!")
+
                   else:
                         YouDead = True
-                        print("GAME OVER.")
-            
+                        print("GAME OVER!")
+            elif inhabitant is not None and isinstance(inhabitant, Supporter):
+                  inhabitant.talk()
+            else:
+                  print("There's no one here to fight.")
+      else :
+            print("Invalid command. Try 'north', 'south', 'east', 'west', 'talk', 'pet', or 'fight'.")     
                   
