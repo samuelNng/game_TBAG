@@ -8,7 +8,7 @@ kitchen.set_name("kitchen")
 kitchen.set_description("A dank and dirty room buzzing with flies")
 
 ballroom = Room()
-ballroom.set_name("ballrom")
+ballroom.set_name("ballroom")
 ballroom.set_description("A vast room with a shiny wooden floor")
 
 dining_hall = Room()
@@ -18,10 +18,10 @@ dining_hall.set_description("A large room with ornate golden decorations")
 
 
 #link_room
-kitchen.link_room(dining_hall, "south")
-dining_hall.link_room(kitchen, "north")
-dining_hall.link_room(ballroom,"west")
-ballroom.link_room(dining_hall,"east")
+kitchen.link_room(dining_hall, "south", locked=True)
+dining_hall.link_room(kitchen, "north", locked=False)
+dining_hall.link_room(ballroom,"west", locked=False)
+ballroom.link_room(dining_hall,"east", locked=False)
 
 
 # Create a cat character
@@ -55,7 +55,7 @@ while YouDead == False:
       print("\n")
       current_room.get_details()
       inhabitant = current_room.get_character()
-      
+      item = current_room.get_item()
       if inhabitant is None:
             print("There have no character!\n")
             print("Which direction would you like to go? North, east, south, west")
@@ -64,7 +64,11 @@ while YouDead == False:
             inhabitant.describe()
       command = input("\n> ")
       if command in ["north", "south", "east", "west"]:
-                  current_room = current_room.move(command)
+                      if current_room.get_name() == "kitchen" and command == "south":
+                         current_room = current_room.move(command, has_key)
+                      else:
+                         current_room = current_room.move(command)
+               
       elif command == "talk":
             if inhabitant is not None:
                 inhabitant.talk()
@@ -76,15 +80,16 @@ while YouDead == False:
             else:
                   print("There's no one here to pet.")
       elif command == "take":
+            item = current_room.get_item()
             if item is not None:
-                  if item.name == "key":
+                  if item.get_name() == "key":
                         has_key = True
                         print("You take the key.")
                         current_room.remove_item()
                   else:
-                        print(f"You take the {item.name}.")
+                        print(f"You take the {item.get_name()}.")
             else:
-                   print("There's nothing here to take.")
+                        print("There's nothing here to take.")
 
       elif command == "fight":
             if inhabitant is not None and isinstance(inhabitant, Enemy):
