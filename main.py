@@ -1,7 +1,7 @@
 from room import Room
 from character import Supporter,Enemy
 from item import Item
-
+#
 # Create rooms
 kitchen = Room()
 kitchen.set_name("kitchen")
@@ -17,7 +17,7 @@ dining_hall.set_description("A large room with ornate golden decorations")
 
 
 
-#link_room
+#link_room 
 kitchen.link_room(dining_hall, "south", locked=True)
 dining_hall.link_room(kitchen, "north", locked=False)
 dining_hall.link_room(ballroom,"west", locked=False)
@@ -113,5 +113,5 @@ while YouDead == False:
             else:
                   print("There's no one here to fight.")
       else :
-            print("Invalid command. Try 'north', 'south', 'east', 'west', 'talk', 'pet', or 'fight'.")     
+            print("Invalid command. Try 'north', 'south', 'east', 'west', 'talk', 'pet', 'take', or 'fight'.")    
                   
