@@ -102,6 +102,7 @@ while YouDead == False:
                         print("GAME OVER!")
             elif inhabitant is not None and isinstance(inhabitant, Supporter):
                   inhabitant.talk()
+                  print(f"Seem the {Supporter.name} do not want to fight with you!")
             else:
                   print("There's no one here to fight.")
       else :
